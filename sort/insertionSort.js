@@ -4,7 +4,7 @@
 * @Last Modified by:   wrma
 * @Last Modified time: 17:10
 */
-//复杂度为O(nlogn)
+//复杂度为O(n2)
 function insertionSort(arr) {
     let length = arr.length;
     //假设第一个数已排好

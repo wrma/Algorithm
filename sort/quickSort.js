@@ -30,12 +30,44 @@
 //
 // console.log(quickSort([5,3,6,1,8]));
 
+// var arr=[5,7,2,9,3,8,4,7,1];
+// // 每次选择最左边的数作为基数
+// function quickSort(arr){
+//     if (arr.length<2) { return arr; }
+//     // 定义左指针
+//     var left=0;
+//     // 定义右指针
+//     var right=arr.length-1;
+//     //开启每一轮的排序
+//     while(left<right){
+//         // 寻找右边比arr[0]小的数的下标
+//         while(arr[right]>=arr[0] && left<right){
+//             right=right-1;
+//         }
+//         // 寻找左边比arr[0]大的数的下标
+//         while(arr[left]<=arr[0] && left<right){
+//             left++;
+//         }
+//         //当左边指针与右边指针相遇后，交换arr[0]与当前两个指针所在的元素
+//         if (right==left) {
+//             let mid=arr[right];
+//             arr[right]=arr[0];
+//             arr[0]=mid;
+//             break;
+//         }
+//         // 当左指针小于右指针的位置，交换两个指针当前位置的元素
+//         let tem=arr[right];
+//         arr[right]=arr[left];
+//         arr[left]=tem;
+//     }
+//     //递归实现
+//     return quickSort(arr.slice(0,left)).concat(arr.slice(left,right+1)).concat(quickSort(arr.slice(right+1)));
+// }
+// //对数组进行排序
+// console.log(quickSort(arr));
 // 原地快排
-function quickSort(arr,left,right) {
-    let len = arr.length;
+function quickSort(arr,left = 0,right = arr.length-1) {
     let partitionIndex;
-    left = typeof left !== 'number' ? 0 : left;
-    right = typeof right !== 'number' ? len - 1 : right;
     if (left < right){
         partitionIndex = partition(arr,left,right);
         quickSort(arr,left,partitionIndex - 1);
@@ -44,19 +76,33 @@ function quickSort(arr,left,right) {
     return arr
 }
 function partition(arr,left,right) {
-    let pivot = left;
-    let index = pivot + 1;
-    for (let i = index;i <= right;i++){
-        console.log(arr)
-        if (arr[i] < arr[pivot]){
-            [arr[index],arr[i]] = [arr[i],arr[index]];
-            index ++;
+    // let pivot = left; // 基准值，这里选取的是最左边的
+    let pivot = Math.floor(Math.random() * (right - left)) + left;
+    // console.log(pivot);
+    [arr[pivot],arr[left]] = [arr[left],arr[pivot]];
+
+    while(left < right){
+        // 先从右边开始找到小于基准值的数，再从左边找到大于基准值的数
+        while(arr[right] >= arr[pivot] && left<right){
+            right--;
+        }
+        while(arr[left] <= arr[pivot] && left<right){
+            left++;
+        }
+        // 如果left 和 right 指针重叠，则交换改指针和基准值
+        if(left === right){
+            [arr[pivot],arr[left]] = [arr[left],arr[pivot]]
+        }else{
+            [arr[right],arr[left]] = [arr[left],arr[right]]
         }
     }
-    [arr[pivot],arr[index-1]] = [arr[index -1],arr[pivot]];
-    return index - 1;
+    // [arr[pivot],arr[index-1]] = [arr[index -1],arr[pivot]];
+    return left;
 }
 console.log(quickSort([5,3,6,1,2,8]));
+
+// 参考资料：https://blog.csdn.net/insistGoGo/article/details/7785038
+// https://segmentfault.com/a/1190000014406198?tdsourcetag=s_pctim_aiomsg
 
 //递归思想
 //1.有终止条件
